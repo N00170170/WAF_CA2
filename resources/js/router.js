@@ -11,6 +11,10 @@ import LecturersIndex from './views/lecturers/LecturersIndex.vue'
 import LecturerCreate from './views/lecturers/LecturerCreate.vue'
 import LecturerUpdate from './views/lecturers/LecturerUpdate.vue'
 
+import EnrolmentsIndex from './views/enrolments/EnrolmentsIndex.vue'
+import EnrolmentCreate from './views/enrolments/EnrolmentCreate.vue'
+import EnrolmentUpdate from './views/enrolments/EnrolmentUpdate.vue'
+
 
 Vue.use(Router)
 
@@ -57,6 +61,21 @@ export default new Router({
         path: '/lecturers/edit/:id',
         name: 'lecturerupdate',
         component: LecturerUpdate,
+      },
+      {
+        path: '/enrolments',
+        name: 'enrolmentsindex',
+        component: EnrolmentsIndex,
+      },
+      {
+        path: '/enrolments/create',
+        name: 'enrolmentcreate',
+        component: EnrolmentCreate,
+      },
+      {
+        path: '/enrolments/edit/:id',
+        name: 'enrolmentupdate',
+        component: EnrolmentUpdate,
       },
     ]
   })

@@ -54,7 +54,7 @@
     </b-modal>
 
     <b-modal ref="no-enrolments" id="no-enrolments" hide-footer title="Warning">
-      <div class="d-block">Are you sure you want to permanently delete this course?</div>
+      <p class="d-block">Are you sure you want to permanently delete this course?</p>
       <b-button @click="hideModals">Cancel</b-button>
       <b-button @click="deleteCourse()" class="btn btn-danger" v-if="!deleting">Yes</b-button>
       <b-button class="btn btn-danger disabled" v-else>
