@@ -1,4 +1,9 @@
 <p align="center"><img src="https://miro.medium.com/max/984/1*IHI90aWzUnrcfHDuh08YTg.png" width="400"></p>
+# Vue.js / Laravel College Web Application
+This application allows a user to view and manipulate data about courses, lecturers and enrolments at a college. This data is provided by a Laravel REST API and the application consumes this data.
+The application demonstrates the ability to design, implement and test a web application using industry standard application frameworks.
+
+The application is written in Vue.js with BootstrapVue as a CSS framework.
 
 ## Installation Instructions
 
@@ -12,17 +17,12 @@ Then cd into the application folder and run the following in your terminal (Git 
 
 - `composer install`
 - `npm install`
+- `php artisan migrate --seed`
 - `php artisan key:generate`
 - `php artisan passport:install`
 
-Then migrate and seed the database:
+Start the development server
+-  `php artisan serve`
 
-- `php artisan migrate --seed`
-
-And then initialise, add, and commit to Git:
-
-- `git init`
-- `git add .`
-- `git commit -am "Initial commit"`
-
-Set your own remote git repo and push your commits
+Compile the frontend in a new terminal
+- `npm run watch`
