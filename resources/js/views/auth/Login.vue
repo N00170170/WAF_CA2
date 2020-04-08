@@ -1,6 +1,6 @@
 <template>
   <div>
-      <b-row align-h="center page-title">
+      <b-row align-h="center" class="page-title">
         <b-col md="5">
           <b-card class="center-page">
             <b-card-title>
@@ -15,9 +15,15 @@
                     name="email"
                     required
                     autocomplete="current-email"
-                    v-model="email"
                     @keydown.enter.native="login()"
+                    v-model="$v.email.$model"
+                    :state="validateState('email')"
+                    aria-describedby="input-email-live-feedback"
+                    placeholder="Enter email"
                   />
+                  <b-form-invalid-feedback
+                    id="input-email-live-feedback"
+                  >This is a required field.</b-form-invalid-feedback>
                 </b-form-group>
 
                 <b-form-group label="Password" label-for="password">
@@ -28,9 +34,15 @@
                     name="password"
                     required
                     autocomplete="current-password"
-                    v-model="password"
                     @keydown.enter.native="login()"
+                    v-model="$v.password.$model"
+                    :state="validateState('password')"
+                    aria-describedby="input-password-live-feedback"
+                    placeholder="Enter password"
                   />
+                <b-form-invalid-feedback
+                  id="input-password-live-feedback"
+                >This is a required field and must be at least {{ $v.password.$params.minLength.min }} characters.</b-form-invalid-feedback>
                 </b-form-group>
 
                 <b-form-group label label-for="login" class="mb-0">
@@ -56,6 +68,13 @@
 import Vue from "vue";
 import axios from "axios";
 import { FormPlugin, ButtonPlugin, SpinnerPlugin } from "bootstrap-vue";
+import { validationMixin } from "vuelidate";
+import {
+  required,
+  maxLength,
+  minLength,
+  email,
+} from "vuelidate/lib/validators";
 
 Vue.use(SpinnerPlugin);
 Vue.use(ButtonPlugin);
@@ -74,6 +93,9 @@ export default {
   methods: {
     login() {
       let app = this;
+      let errors = app.$v.$invalid;
+
+      if (!errors) {
       app.authLoading = true;
       axios
         .post("/api/login", {
@@ -91,8 +113,35 @@ export default {
           app.authLoading = false;
           console.log(error);
         });
+      } else {
+        app.makeToastError();
+      }
+    },
+    makeToastError(append = false) {
+      this.$bvToast.toast(`Validation errors`, {
+        title: "Form Error",
+        variant: "danger",
+        toaster: "b-toaster-bottom-right",
+        autoHideDelay: 3000,
+        appendToast: append
+      });
+    },
+    validateState(name) {
+      const { $dirty, $error } = this.$v[name];
+      return $dirty ? !$error : null;
     }
-  }
+  },
+  validations: {
+      email: {
+        required,
+        email,
+        maxLength: maxLength(50)
+      },
+      password: {
+      required,
+      minLength: minLength(8)
+    },
+    }
 };
 </script>
 

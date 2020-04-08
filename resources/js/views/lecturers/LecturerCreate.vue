@@ -1,6 +1,6 @@
 <template>
   <div>
-    <b-row align-h="center page-title">
+    <b-row align-h="center" class="page-title">
       <b-col md="6">
         <b-card class="cent">
           <b-card-title>
@@ -9,7 +9,7 @@
             Lecturer
             <router-link :to="`/lecturers`">
               <b-button class="float-right btn btn-primary">
-                <b-icon icon="reply-fill" style="transform: scaleX(-1)"></b-icon> Back
+                <b-icon icon="reply-fill" style="transform: scaleX(-1)"></b-icon>Back
               </b-button>
             </router-link>
           </b-card-title>
@@ -22,9 +22,14 @@
                 name="name"
                 required
                 autocomplete="current-name"
-                v-model="lecturer.name"
-                @keydown.enter.native="login()"
+                v-model="$v.lecturer.name.$model"
+                :state="validateState('name')"
+                aria-describedby="input-name-live-feedback"
+                placeholder="Enter name"
               />
+              <b-form-invalid-feedback
+                id="input-name-live-feedback"
+              >This is a required field and cannot be longer than {{ $v.lecturer.name.$params.maxLength.max }} characters.</b-form-invalid-feedback>
             </b-form-group>
 
             <b-form-group label="Address" label-for="address">
@@ -35,9 +40,14 @@
                 name="address"
                 required
                 autocomplete="current-address"
-                v-model="lecturer.address"
-                @keydown.enter.native="login()"
+                v-model="$v.lecturer.address.$model"
+                :state="validateState('address')"
+                aria-describedby="input-address-live-feedback"
+                placeholder="Enter address"
               />
+              <b-form-invalid-feedback
+                id="input-address-live-feedback"
+              >This is a required field and cannot be longer than {{ $v.lecturer.address.$params.maxLength.max }} characters.</b-form-invalid-feedback>
             </b-form-group>
 
             <b-form-group label="Email" label-for="email">
@@ -48,9 +58,14 @@
                 name="email"
                 required
                 autocomplete="current-email"
-                v-model="lecturer.email"
-                @keydown.enter.native="login()"
+                v-model="$v.lecturer.email.$model"
+                :state="validateState('email')"
+                aria-describedby="input-email-live-feedback"
+                placeholder="Enter email"
               />
+              <b-form-invalid-feedback
+                id="input-email-live-feedback"
+              >This is a required field and cannot be longer than {{ $v.lecturer.email.$params.maxLength.max }} characters.</b-form-invalid-feedback>
             </b-form-group>
 
             <b-form-group label="Phone" label-for="phone">
@@ -61,9 +76,14 @@
                 name="phone"
                 required
                 autocomplete="current-phone"
-                v-model="lecturer.phone"
-                @keydown.enter.native="login()"
+                v-model="$v.lecturer.phone.$model"
+                :state="validateState('phone')"
+                aria-describedby="input-phone-live-feedback"
+                placeholder="Enter phone"
               />
+              <b-form-invalid-feedback
+                id="input-phone-live-feedback"
+              >This is a required field and cannot be longer than {{ $v.lecturer.phone.$params.maxLength.max }} characters.</b-form-invalid-feedback>
             </b-form-group>
 
             <b-form-group label label-for="submit" class="mb-0">
@@ -92,12 +112,21 @@ import Vue from "vue";
 import axios from "axios";
 import { FormPlugin, ButtonPlugin, SpinnerPlugin } from "bootstrap-vue";
 import LoadingSpinner from "../../components/LoadingSpinner.vue";
+import { validationMixin } from "vuelidate";
+import {
+  required,
+  maxLength,
+  minValue,
+  maxValue,
+  email
+} from "vuelidate/lib/validators";
 
 Vue.use(SpinnerPlugin);
 Vue.use(ButtonPlugin);
 Vue.use(FormPlugin);
 
 export default {
+  mixins: [validationMixin],
   name: "LecturerCreate",
   components: {
     LoadingSpinner
@@ -139,29 +168,69 @@ export default {
     submit() {
       let app = this;
       let token = localStorage.getItem("token");
-      app.submitting = true;
-      if (app.editing) {
-        axios
-          .put("/api/lecturers/" + app.lecturer.id, app.lecturer, {
-            headers: { Authorization: "Bearer " + token }
-          })
-          .then(response => {
-            this.$router.push("/lecturers");
-          })
-          .catch(err => {
-            app.submitting = false;
-          });
+      let errors = app.$v.lecturer.$invalid;
+
+      if (!errors) {
+        app.submitting = true;
+        if (app.editing) {
+          axios
+            .put("/api/lecturers/" + app.lecturer.id, app.lecturer, {
+              headers: { Authorization: "Bearer " + token }
+            })
+            .then(response => {
+              this.$router.push("/lecturers");
+            })
+            .catch(err => {
+              app.submitting = false;
+            });
+        } else {
+          axios
+            .post("/api/lecturers", app.lecturer, {
+              headers: { Authorization: "Bearer " + token }
+            })
+            .then(response => {
+              this.$router.push("/lecturers");
+            })
+            .catch(err => {
+              app.submitting = false;
+            });
+        }
       } else {
-        axios
-          .post("/api/lecturers", app.lecturer, {
-            headers: { Authorization: "Bearer " + token }
-          })
-          .then(response => {
-            this.$router.push("/lecturers");
-          })
-          .catch(err => {
-            app.submitting = false;
-          });
+        app.makeToastError();
+      }
+    },
+    makeToastError(append = false) {
+      this.$bvToast.toast(`Validation errors`, {
+        title: "Form Error",
+        variant: "danger",
+        toaster: "b-toaster-bottom-right",
+        autoHideDelay: 3000,
+        appendToast: append
+      });
+    },
+    validateState(name) {
+      const { $dirty, $error } = this.$v.lecturer[name];
+      return $dirty ? !$error : null;
+    }
+  },
+  validations: {
+    lecturer: {
+      name: {
+        required,
+        maxLength: maxLength(50)
+      },
+      address: {
+        required,
+        maxLength: maxLength(100)
+      },
+      phone: {
+        required,
+        maxLength: maxLength(20)
+      },
+      email: {
+        required,
+        email,
+        maxLength: maxLength(50)
       }
     }
   }

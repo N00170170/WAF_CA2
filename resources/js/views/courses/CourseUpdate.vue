@@ -1,5 +1,6 @@
 <template>
   <div>
+    <!-- Using CourseCreate as component -->
     <CourseCreate v-if="course" :course="course" editing></CourseCreate>
     <LoadingSpinner v-else></LoadingSpinner>
   </div>

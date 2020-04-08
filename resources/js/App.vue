@@ -1,5 +1,6 @@
 <template>
-  <div class="bg">
+<!-- If route is /, apply bg class to display background image on page -->
+  <div v-bind:class="{ 'bg': $route.path == '/' }"> 
     <Navbar :loggedIn="this.loggedIn" v-on:login="setLoggedIn" v-on:logout="setLoggedOut"></Navbar>
     <b-container align-h="center">
       <transition :name="transitionName" mode="out-in">
@@ -66,10 +67,13 @@ export default {
 
 .b-container {
   margin: auto;
+  height: 100%;
+
 }
 
 .page-title {
   padding-top: 20px;
+
 }
 
 .component-fade-enter-active,
@@ -81,9 +85,13 @@ export default {
   opacity: 0;
 }
 
-/* .bg {
-  background-color: #f7f7f7; 
-} */
+.bg {
+    background-image: url("https://images.unsplash.com/photo-1498243691581-b145c3f54a5a?ixlib=rb-1.2.1&auto=format&fit=crop&w=750&q=80");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 100%;
+}
 
 .slide-enter-active,
 .slide-leave-active {
