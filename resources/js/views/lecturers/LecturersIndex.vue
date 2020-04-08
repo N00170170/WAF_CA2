@@ -54,7 +54,7 @@
     </b-modal>
 
     <b-modal ref="no-enrolments" id="no-enrolments" hide-footer title="Warning">
-      <div class="d-block">Are you sure you want to permanently delete this lecturer?</div>
+      <p class="d-block">Are you sure you want to permanently delete this lecturer?</p>
       <b-button @click="hideModals">Cancel</b-button>
       <b-button @click="deleteLecturer()" class="btn btn-danger" v-if="!deleting">Yes</b-button>
       <b-button class="btn btn-danger disabled" v-else>
@@ -75,7 +75,7 @@ Vue.use(ButtonPlugin);
 Vue.use(ModalPlugin);
 
 export default {
-  name: "login",
+  name: "LecturersIndex",
   components: {
     LoadingSpinner,
     ModalPlugin
@@ -129,12 +129,10 @@ export default {
             app.$bvModal.show("no-enrolments");
           }
           app.lecturerIndexCheck = null;
-          //   app.courseIndex = null;
         })
         .catch(function(error) {
           console.log(error);
           app.lecturerIndexCheck = null;
-          //   app.courseIndex = null;
         });
     },
     deleteEnrolments() {
@@ -217,16 +215,8 @@ export default {
       app.$bvModal.hide("no-enrolments");
     }
   }
-  //   computed: {
-  //     ...mapState({
-  //       authLoading: state => state.auth.status === "loading"
-  //     })
-  //   }
 };
 </script>
 
 <style>
-.page-title{
-  padding-top: 20px;  
-}
 </style>

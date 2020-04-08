@@ -36,46 +36,73 @@ export default new Router({
         path: '/courses',
         name: 'coursesindex',
         component: CoursesIndex,
+        meta: {
+            depthIndex: 1
+        }
       },
       {
         path: '/courses/create',
         name: 'coursecreate',
         component: CourseCreate,
+        meta: {
+            depthIndex: 1
+        }
       },
       {
         path: '/courses/edit/:id',
         name: 'courseupdate',
         component: CourseUpdate,
+        meta: {
+            depthIndex: 1
+        }
       },
       {
         path: '/lecturers',
         name: 'lecturersindex',
         component: LecturersIndex,
+        meta: {
+            depthIndex: 2
+        }
       },
       {
         path: '/lecturers/create',
         name: 'lecturercreate',
         component: LecturerCreate,
+        meta: {
+            depthIndex: 2
+        }
       },
       {
         path: '/lecturers/edit/:id',
         name: 'lecturerupdate',
         component: LecturerUpdate,
+        meta: {
+            depthIndex: 2
+        }
       },
       {
         path: '/enrolments',
         name: 'enrolmentsindex',
         component: EnrolmentsIndex,
+        meta: {
+            depthIndex: 3
+        }
       },
       {
         path: '/enrolments/create',
         name: 'enrolmentcreate',
         component: EnrolmentCreate,
+        meta: {
+            depthIndex: 3
+        }
       },
       {
         path: '/enrolments/edit/:id',
         name: 'enrolmentupdate',
         component: EnrolmentUpdate,
+        meta: {
+            depthIndex: 3
+        }
       },
     ]
   })

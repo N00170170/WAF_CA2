@@ -1,13 +1,17 @@
 <template>
   <div>
     <b-row align-h="center page-title">
-      <!-- <b-container fluid class="center"> -->
       <b-col md="6">
         <b-card class="cent">
           <b-card-title>
             <span v-if="!editing">Create</span>
             <span v-else>Update</span>
             Lecturer
+            <router-link :to="`/lecturers`">
+              <b-button class="float-right btn btn-primary">
+                <b-icon icon="reply-fill" style="transform: scaleX(-1)"></b-icon> Back
+              </b-button>
+            </router-link>
           </b-card-title>
           <b-form>
             <b-form-group label="Name" label-for="name">
@@ -80,7 +84,6 @@
         </b-card>
       </b-col>
     </b-row>
-    <!-- </b-container> -->
   </div>
 </template>
 
@@ -162,16 +165,8 @@ export default {
       }
     }
   }
-  //   computed: {
-  //     ...mapState({
-  //       authLoading: state => state.auth.status === "loading"
-  //     })
-  //   }
 };
 </script>
 
 <style>
-.cent {
-  margin: auto;
-}
 </style>

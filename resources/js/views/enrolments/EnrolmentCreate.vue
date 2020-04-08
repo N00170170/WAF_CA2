@@ -1,12 +1,17 @@
 <template>
   <div>
     <b-row align-h="center page-title">
-      <b-col md="6">
-        <b-card class="cent">
+      <b-col lg="6">
+        <b-card class="center-page">
           <b-card-title>
             <span v-if="!editing">Create</span>
             <span v-else>Update</span>
             Enrolment
+            <router-link :to="`/enrolments`">
+              <b-button class="float-right btn btn-primary">
+                <b-icon icon="reply-fill" style="transform: scaleX(-1)"></b-icon>Back
+              </b-button>
+            </router-link>
           </b-card-title>
           <b-form>
             <b-row>
@@ -14,36 +19,11 @@
                 <b-form-group label="Date" label-for="date">
                   <b-form-datepicker v-model="enrolment.date"></b-form-datepicker>
                 </b-form-group>
-                <!-- <b-form-group label="Date" label-for="date">
-              <b-form-input
-                id="date"
-                type="date"
-                class="form-control"
-                name="date"
-                required
-                autocomplete="current-date"
-                v-model="enrolment.date"
-                @keydown.enter.native="login()"
-              />
-                </b-form-group>-->
               </b-col>
               <b-col sm="5">
                 <b-form-group label="Time" label-for="time">
                   <b-form-timepicker v-model="enrolment.time" locale="en"></b-form-timepicker>
                 </b-form-group>
-
-                <!-- <b-form-group label="Time" label-for="time">
-              <b-form-input
-                id="time"
-                type="time"
-                class="form-control"
-                name="time"
-                required
-                autocomplete="current-time"
-                v-model="enrolment.time"
-                @keydown.enter.native="login()"
-              />
-                </b-form-group>-->
               </b-col>
             </b-row>
             <b-form-group label="Status" label-for="status">
@@ -210,16 +190,8 @@ export default {
       }
     }
   }
-  //   computed: {
-  //     ...mapState({
-  //       authLoading: state => state.auth.status === "loading"
-  //     })
-  //   }
 };
 </script>
 
 <style>
-.cent {
-  margin: auto;
-}
 </style>

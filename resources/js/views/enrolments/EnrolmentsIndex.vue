@@ -1,9 +1,9 @@
 <template>
   <div>
-      <h2 class="mb-4 page-title">
-        Enrolments
-        <b-button to="/enrolments/create" class="float-right btn btn-success">+ New</b-button>
-      </h2>
+    <h2 class="mb-4 page-title">
+      Enrolments
+      <b-button to="/enrolments/create" class="float-right btn btn-success">+ New</b-button>
+    </h2>
     <b-row>
       <b-col md="12">
         <b-table :fields="fields" :items="enrolments" :busy="isBusy" hover responsive>
@@ -13,14 +13,10 @@
           </template>
 
           <!-- Date slot -->
-          <template v-slot:cell(date)="data">
-          {{ dateToString(data.item.date) }}          
-          </template>
+          <template v-slot:cell(date)="data">{{ dateToString(data.item.date) }}</template>
 
           <!-- Time slot -->
-          <template v-slot:cell(time)="data">
-          {{ timeToString(data.item.time) }}          
-          </template>
+          <template v-slot:cell(time)="data">{{ timeToString(data.item.time) }}</template>
 
           <!-- Status slot -->
           <template v-slot:cell(status)="data">
@@ -31,14 +27,10 @@
           </template>
 
           <!-- Course slot -->
-          <template v-slot:cell(course)="data">
-          {{ data.item.course.title }}            
-          </template>
+          <template v-slot:cell(course)="data">{{ data.item.course.title }}</template>
 
           <!-- Lecturer slot -->
-          <template v-slot:cell(lecturer)="data">
-          {{ data.item.lecturer.name }}            
-          </template>
+          <template v-slot:cell(lecturer)="data">{{ data.item.lecturer.name }}</template>
 
           <!-- Actions slot -->
           <template class="text-nowrap" v-slot:cell(actions)="data">
@@ -78,7 +70,7 @@
 <script>
 import Vue from "vue";
 import axios from "axios";
-import moment from 'moment';
+import moment from "moment";
 import { ModalPlugin, ButtonPlugin, SpinnerPlugin } from "bootstrap-vue";
 import LoadingSpinner from "../../components/LoadingSpinner.vue";
 
@@ -87,7 +79,7 @@ Vue.use(ButtonPlugin);
 Vue.use(ModalPlugin);
 
 export default {
-  name: "login",
+  name: "EnrolmentsIndex",
   components: {
     LoadingSpinner,
     ModalPlugin
@@ -136,43 +128,38 @@ export default {
       app.deleting = true;
 
       axios
-          .delete("/api/enrolments/" + app.enrolment.id, {
-            headers: { Authorization: "Bearer " + token }
-          })
-          .then(function(response) {
-            app.hideModals();
-            app.deleting = false;
-            app.$delete(app.enrolments, app.enrolmentIndex);
-            app.enrolmentIndex = null;
-          })
-          .catch(function(error) {
-            console.log(error);
-            app.deleting = false;
-            app.enrolmentIndex = null;
-          });
+        .delete("/api/enrolments/" + app.enrolment.id, {
+          headers: { Authorization: "Bearer " + token }
+        })
+        .then(function(response) {
+          app.hideModals();
+          app.deleting = false;
+          app.$delete(app.enrolments, app.enrolmentIndex);
+          app.enrolmentIndex = null;
+        })
+        .catch(function(error) {
+          console.log(error);
+          app.deleting = false;
+          app.enrolmentIndex = null;
+        });
     },
+    //hide modals
     hideModals() {
       let app = this;
       app.$bvModal.hide("confirm-delete");
     },
-    dateToString(date){
-      return new Date(date).toDateString()
+    //convert date into friendlier format
+    dateToString(date) {
+      return new Date(date).toDateString();
     },
-    timeToString(time){
-      var parsedTime = moment(time, 'HH:mm:ss'); //parse time into timestamp
+    //convert time into friendlier format
+    timeToString(time) {
+      var parsedTime = moment(time, "HH:mm:ss"); //parse time into timestamp
       return moment(parsedTime).format("h:mm A"); //format timestamp to custom format
     }
   }
-  //   computed: {
-  //     ...mapState({
-  //       authLoading: state => state.auth.status === "loading"
-  //     })
-  //   }
 };
 </script>
 
 <style>
-.page-title{
-  padding-top: 20px;  
-}
 </style>
